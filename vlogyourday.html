@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 1 · Vlog your day! — проверка тем</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FBF7F3; --card:#FFFFFF; --ink:#2E2A3B; --muted:#6F6A80; --line:#ECE4DC;
+  --plum:#B9457F; --plum-s:#F8E5EF; --mint:#2F8F7E; --mint-s:#E0F3EE;
+  --peach:#E98A4B; --peach-s:#FDEBDD; --lav:#6F5FC4; --lav-s:#ECE8FA;
+  --sky:#3479B6; --sky-s:#E3EFF9; --hl:#FFE68A;
+  --ok:#2E9A66; --ok-s:#E2F5EA; --bad:#D2574F; --bad-s:#FCE7E5;
+  --r:18px; --sh:0 6px 22px rgba(70,50,40,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Nunito",system-ui,sans-serif;font-size:17px;line-height:1.6}
+h1,h2,h3,h4{font-family:"Fredoka","Nunito",sans-serif;font-weight:600;line-height:1.25;margin:0 0 .4em}
+mark{background:linear-gradient(transparent 38%,var(--hl) 38%);color:inherit;padding:0 .12em;border-radius:3px}
+b,strong{font-weight:800}
+.wrap{max-width:1000px;margin:0 auto;padding:0 18px}
+
+/* header */
+header.top{position:sticky;top:0;z-index:20;background:rgba(251,247,243,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topin{display:flex;align-items:center;gap:14px;padding:10px 0;flex-wrap:wrap}
+.logo{font-family:"Fredoka";font-weight:700;font-size:22px;color:var(--plum);white-space:nowrap}
+.logo span{background:var(--plum);color:#fff;border-radius:10px;padding:0 9px;margin-right:6px}
+.rankbox{margin-left:auto;display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 12px;min-width:250px}
+.rankemo{font-size:26px}
+.rankname{font-weight:800;font-size:14px}
+.xpbar{height:8px;background:var(--plum-s);border-radius:9px;overflow:hidden;margin-top:3px}
+.xpbar i{display:block;height:100%;background:linear-gradient(90deg,var(--plum),var(--peach));border-radius:9px;transition:width .6s}
+.xptext{font-size:12px;color:var(--muted)}
+nav.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px}
+nav.tabs a{flex:none;text-decoration:none;color:var(--ink);font-weight:700;font-size:15px;padding:7px 14px;border-radius:999px;background:var(--card);border:1px solid var(--line);transition:.2s}
+nav.tabs a:hover{border-color:var(--plum)}
+nav.tabs a.on{background:var(--plum);color:#fff;border-color:var(--plum)}
+
+section.view{display:none;padding:26px 0 40px}
+section.view.on{display:block}
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);padding:22px;margin-bottom:18px;border:1px solid #F1EAE3}
+.hero{background:linear-gradient(135deg,var(--plum-s),var(--peach-s));border:none}
+.hero h1{font-size:34px;color:var(--plum)}
+.muted{color:var(--muted)}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.pill{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:2px 10px;border-radius:999px;background:var(--plum-s);color:var(--plum)}
+.btn{font-family:inherit;font-weight:800;font-size:15px;border:none;border-radius:12px;padding:10px 18px;cursor:pointer;background:var(--plum);color:#fff;transition:transform .1s,filter .2s}
+.btn:hover{filter:brightness(1.07)} .btn:active{transform:scale(.97)}
+.btn.ghost{background:var(--card);color:var(--ink);border:1.5px solid var(--line)}
+.btn.mint{background:var(--mint)} .btn.lav{background:var(--lav)} .btn.peach{background:var(--peach)}
+.btn.sm{padding:6px 12px;font-size:13px;border-radius:10px}
+
+/* ranks */
+.ladder{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:10px}
+.rk{text-align:center;border-radius:14px;padding:12px 6px;background:#F6F1EC;opacity:.55;border:2px solid transparent}
+.rk .e{font-size:30px}
+.rk .n{font-weight:800;font-size:13px}
+.rk .x{font-size:12px;color:var(--muted)}
+.rk.got{opacity:1;background:var(--mint-s)}
+.rk.cur{border-color:var(--plum);background:var(--plum-s);opacity:1}
+
+/* lesson chooser */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.chip{border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:8px 12px;cursor:pointer;font-weight:700;font-family:inherit;font-size:14px;color:var(--ink);text-align:left}
+.chip small{display:block;font-weight:600;color:var(--muted);font-size:12px}
+.chip.on{border-color:var(--plum);background:var(--plum-s)}
+.chip .pc{float:right;margin-left:8px;font-size:12px;color:var(--mint)}
+.lhead{border-left:6px solid var(--plum);padding-left:14px;margin-bottom:14px}
+.lhead h2{font-size:28px;margin:0}
+.key{background:var(--peach-s);border-radius:14px;padding:14px 16px;margin:12px 0}
+.key h4{color:var(--peach);margin-bottom:6px;font-size:16px}
+.strategy{background:var(--lav-s);border-radius:14px;padding:14px 16px;margin:12px 0}
+.strategy h4{color:var(--lav);font-size:16px;margin-bottom:4px}
+.reading{background:#FFFCF7;border:1px dashed #E7D9C9;border-radius:14px;padding:16px 18px;margin:10px 0;font-size:16px}
+.reading h4{color:var(--plum)}
+.reading p{margin:.4em 0}
+
+/* exercises */
+.ex{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);padding:20px 22px;margin-bottom:16px;border:1px solid #F1EAE3}
+.exh{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.exn{flex:none;width:32px;height:32px;border-radius:10px;background:var(--plum);color:#fff;font-family:"Fredoka";font-weight:600;display:grid;place-items:center;font-size:15px}
+.exh h4{margin:0;font-size:19px}
+.badge{margin-left:auto;font-size:13px;font-weight:800;padding:3px 10px;border-radius:999px;background:#F3EEE9;color:var(--muted);white-space:nowrap}
+.badge.perf{background:#FFF3C4;color:#9A6B00}
+.badge.done{background:var(--ok-s);color:var(--ok)}
+.instr{color:var(--muted);margin:0 0 10px;font-weight:600}
+.bank{display:flex;flex-wrap:wrap;gap:6px;background:var(--sky-s);border-radius:12px;padding:10px 12px;margin-bottom:12px}
+.bank span{background:#fff;border-radius:8px;padding:2px 10px;font-weight:700;color:var(--sky);font-size:15px}
+ol.items{margin:0;padding-left:26px}
+ol.items li{margin:9px 0;padding-left:4px}
+.plain p{margin:8px 0}
+.para{line-height:2.2}
+input.blank{font-family:inherit;font-size:16px;font-weight:700;color:var(--sky);border:none;border-bottom:2px solid #C9D9EA;background:#F6FAFE;border-radius:6px 6px 0 0;padding:1px 6px;margin:0 2px;min-width:70px;outline:none;transition:.2s}
+input.blank:focus{border-color:var(--sky);background:#EAF3FC}
+input.blank.ok,select.ok{border-color:var(--ok);background:var(--ok-s);color:var(--ok)}
+input.blank.bad,select.bad{border-color:var(--bad);background:var(--bad-s);color:var(--bad)}
+.fix{display:none;font-size:14px;font-weight:800;color:var(--ok);background:var(--ok-s);border-radius:6px;padding:0 6px;margin-left:3px}
+.ex.reveal .fix{display:inline}
+.cg{display:inline-flex;gap:4px;flex-wrap:wrap;vertical-align:middle}
+.ch{font-family:inherit;font-size:15px;font-weight:700;border:1.5px solid var(--line);background:#fff;border-radius:9px;padding:2px 10px;cursor:pointer;color:var(--ink)}
+.ch:hover{border-color:var(--sky)}
+.ch.sel{background:var(--sky);border-color:var(--sky);color:#fff}
+.ch.sel.ok{background:var(--ok);border-color:var(--ok)}
+.ch.sel.bad{background:var(--bad);border-color:var(--bad)}
+.ex.reveal .ch.right:not(.sel){border-color:var(--ok);color:var(--ok);background:var(--ok-s)}
+.mcq{margin-bottom:4px}
+.mco{margin-top:6px}
+select{font-family:inherit;font-size:15px;font-weight:700;border:1.5px solid var(--line);border-radius:9px;padding:4px 8px;background:#fff;color:var(--ink);max-width:100%}
+.mrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.mrow .q{flex:1 1 260px}
+.opts{background:#F7F3EF;border-radius:12px;padding:10px 14px;margin-bottom:10px;font-size:15px}
+.opts div{margin:2px 0}
+textarea{width:100%;font-family:inherit;font-size:16px;border:1.5px solid var(--line);border-radius:12px;padding:10px;min-height:70px;resize:vertical;margin-top:6px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.res{font-weight:800;margin-left:6px}
+.res.good{color:var(--ok)} .res.meh{color:var(--peach)}
+.gloss{display:inline-block;background:#F6F1EC;border-radius:10px;padding:4px 12px;font-size:15px;margin-top:8px}
+
+/* grammar */
+details.gram{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:14px;border:1px solid #F1EAE3;overflow:hidden}
+details.gram>summary{list-style:none;cursor:pointer;padding:18px 22px;display:flex;align-items:center;gap:12px;font-family:"Fredoka";font-size:20px;font-weight:600}
+details.gram>summary::-webkit-details-marker{display:none}
+details.gram>summary .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:20px;flex:none}
+details.gram>summary .ar{margin-left:auto;transition:transform .25s;color:var(--muted)}
+details.gram[open]>summary .ar{transform:rotate(90deg)}
+details.gram>summary small{display:block;font-family:"Nunito";font-size:13px;color:var(--muted);font-weight:700}
+.gbody{padding:0 22px 20px}
+table.t{border-collapse:collapse;width:100%;margin:10px 0;font-size:16px}
+table.t th,table.t td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+table.t th{background:#F7F1EB;font-weight:800}
+.ex-l{color:var(--sky);font-weight:700}
+.warn{background:var(--bad-s);border-radius:12px;padding:10px 14px;margin:10px 0;font-size:16px}
+.warn b{color:var(--bad)}
+.tip{background:var(--mint-s);border-radius:12px;padding:10px 14px;margin:10px 0;font-size:16px}
+.tip b{color:var(--mint)}
+.no{text-decoration:line-through;color:var(--bad)}
+
+/* game */
+.gset .row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}
+.opt{border:2px solid var(--line);background:#fff;border-radius:12px;padding:8px 14px;cursor:pointer;font-weight:800;font-family:inherit;font-size:15px;color:var(--ink)}
+.opt.on{border-color:var(--lav);background:var(--lav-s);color:var(--lav)}
+.play{display:none}
+.hud{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-weight:800}
+.hearts{font-size:22px;letter-spacing:2px}
+.combo{color:var(--peach)}
+.tbar{height:12px;border-radius:9px;background:var(--lav-s);overflow:hidden;margin:12px 0 18px}
+.tbar i{display:block;height:100%;background:linear-gradient(90deg,var(--mint),var(--lav));transition:width .25s linear}
+.prompt{text-align:center;font-family:"Fredoka";font-size:34px;font-weight:600;margin:10px 0 4px;color:var(--ink)}
+.psub{text-align:center;color:var(--muted);font-weight:700;margin-bottom:16px;min-height:1.5em}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ans{font-family:inherit;font-size:18px;font-weight:700;border:2px solid var(--line);background:#fff;border-radius:14px;padding:14px;cursor:pointer;color:var(--ink);transition:.15s}
+.ans:hover{border-color:var(--lav)}
+.ans.ok{background:var(--ok-s);border-color:var(--ok);color:var(--ok)}
+.ans.bad{background:var(--bad-s);border-color:var(--bad);color:var(--bad)}
+.ans kbd{font-size:12px;color:var(--muted);margin-right:6px}
+.typebox{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.typebox input{font-family:inherit;font-size:22px;font-weight:700;text-align:center;border:2px solid var(--line);border-radius:14px;padding:10px 14px;width:min(420px,100%);outline:none}
+.typebox input:focus{border-color:var(--lav)}
+.typebox input.ok{border-color:var(--ok);background:var(--ok-s)}
+.typebox input.bad{border-color:var(--bad);background:var(--bad-s)}
+.over{display:none;text-align:center}
+.big{font-family:"Fredoka";font-size:46px;color:var(--lav);margin:0}
+.mist{text-align:left;max-width:560px;margin:12px auto;background:#F7F3EF;border-radius:12px;padding:10px 16px}
+.wl{columns:2 280px;column-gap:24px}
+.wl .grp{break-inside:avoid;margin-bottom:16px}
+.wl h4{color:var(--plum);font-size:17px;margin-bottom:4px}
+.wl div.w{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dotted var(--line);padding:3px 0;font-size:15px}
+.wl div.w span:first-child{font-weight:800}
+.wl div.w span:last-child{color:var(--muted);text-align:right}
+
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(30px);background:var(--ink);color:#fff;font-weight:800;padding:12px 20px;border-radius:14px;opacity:0;transition:.35s;z-index:50;pointer-events:none;text-align:center;max-width:90vw}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+footer{margin-top:20px;padding:26px 0 34px;text-align:center}
+.sig{display:inline-block;background:var(--card);border:1.5px solid var(--line);box-shadow:var(--sh);border-radius:999px;padding:10px 26px;font-family:"Fredoka";font-weight:600;font-size:18px;color:var(--plum)}
+@media (max-width:600px){
+  body{font-size:16px}
+  .rankbox{margin-left:0;width:100%}
+  .hero h1{font-size:27px}
+  .answers{grid-template-columns:1fr}
+  .prompt{font-size:27px}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="topin">
+      <div class="logo"><span>1</span>Vlog your day!</div>
+      <div class="rankbox">
+        <div class="rankemo" id="rEmo">🐣</div>
+        <div style="flex:1">
+          <div class="rankname" id="rName">Newbie</div>
+          <div class="xpbar"><i id="rBar" style="width:0"></i></div>
+          <div class="xptext" id="rText">0 XP</div>
+        </div>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs">
+      <a href="#home" data-v="home">🏠 Главная</a>
+      <a href="#lessons" data-v="lessons">📚 Уроки 1.1–1.9</a>
+      <a href="#review" data-v="review">🔁 Review 1.10</a>
+      <a href="#game" data-v="game">⏱️ Игра слов</a>
+      <a href="#grammar" data-v="grammar">📐 Грамматика</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- HOME -->
+<section class="view" id="v-home">
+  <div class="card hero">
+    <span class="pill">Life Vision Elementary · Unit 1</span>
+    <h1>Vlog your day! — проверь себя</h1>
+    <p>Здесь собраны все темы первого юнита: <mark>распорядок дня</mark>, <mark>хобби</mark>, <mark>Present Simple</mark>, <mark>предлоги времени</mark>, <mark>likes &amp; dislikes</mark> и <mark>личный профиль</mark>. Решай упражнения, играй в игру слов на время, зарабатывай XP и поднимайся по рангам!</p>
+    <div class="acts">
+      <a class="btn" href="#lessons" style="text-decoration:none">Начать с урока 1.1 →</a>
+      <a class="btn lav" href="#game" style="text-decoration:none">⏱️ Игра слов</a>
+      <a class="btn mint" href="#review" style="text-decoration:none">🔁 Review</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏆 Ранги</h3>
+    <p class="muted" style="margin-top:0">Набирай XP — открывай новые ранги.</p>
+    <div class="ladder" id="ladder"></div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <h3>⚡ Как получить XP</h3>
+      <ol class="items">
+        <li><b>+2 XP</b> за каждый верный ответ в упражнении (засчитывается лучший результат).</li>
+        <li><mark><b>+15 XP</b> — идеально с первой попытки</mark> ⭐</li>
+        <li><b>+5 XP</b> — идеально, но со второй попытки и дальше.</li>
+        <li><b>Игра слов:</b> +1 XP за ответ, <b>×2</b> при комбо 5+, <mark><b>+20 XP</b> за раунд без ошибок</mark>.</li>
+        <li><b>+3 XP</b> за ответы в заданиях Think &amp; share.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>📊 Мой прогресс</h3>
+      <div id="progressList"></div>
+      <div class="acts"><button class="btn ghost sm" id="resetBtn">Сбросить прогресс</button><span class="muted" id="resetHint" style="font-size:13px"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- LESSONS -->
+<section class="view" id="v-lessons">
+  <div class="chips" id="lessonChips"></div>
+  <div id="lessonBox"></div>
+</section>
+
+<!-- REVIEW -->
+<section class="view" id="v-review">
+  <div class="lhead" style="border-color:var(--sky)"><span class="pill" style="background:var(--sky-s);color:var(--sky)">1.10</span><h2>Review</h2><div class="muted">Полное повторение юнита из учебника: грамматика, лексика, cumulative review.</div></div>
+  <div id="reviewBox"></div>
+</section>
+
+<!-- GAME -->
+<section class="view" id="v-game">
+  <div class="card gset" id="gSetup">
+    <h2>⏱️ Игра слов на время</h2>
+    <p class="muted" style="margin-top:0">60 секунд и 3 жизни ❤️. Каждый верный ответ даёт <b>+1 секунду</b>. Комбо из 5 ответов подряд удваивает очки!</p>
+    <b>Режим</b>
+    <div class="row" id="gModes">
+      <button class="opt on" data-m="enru">🇬🇧 → 🇷🇺 выбор</button>
+      <button class="opt" data-m="ruen">🇷🇺 → 🇬🇧 выбор</button>
+      <button class="opt" data-m="type">✍️ Напиши слово</button>
+    </div>
+    <b>Тема</b>
+    <div class="row" id="gCats"></div>
+    <button class="btn lav" id="gStart">Старт ▶</button>
+    <span class="muted" id="gBest" style="margin-left:10px;font-weight:700"></span>
+  </div>
+
+  <div class="card play" id="gPlay">
+    <div class="hud">
+      <span class="hearts" id="gHearts">❤️❤️❤️</span>
+      <span>Очки: <span id="gScore">0</span></span>
+      <span class="combo" id="gCombo"></span>
+      <span style="margin-left:auto" id="gTime">60</span>
+    </div>
+    <div class="tbar"><i id="gBar" style="width:100%"></i></div>
+    <div class="prompt" id="gPrompt">…</div>
+    <div class="psub" id="gSub"></div>
+    <div class="answers" id="gAns"></div>
+    <div class="typebox" id="gType" style="display:none">
+      <input id="gInput" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type in English…">
+      <button class="btn lav" id="gOk">OK</button>
+      <button class="btn ghost" id="gSkip">Пропустить</button>
+    </div>
+  </div>
+
+  <div class="card over" id="gOver">
+    <div class="muted" style="font-weight:800">Раунд окончен</div>
+    <p class="big" id="gFinal">0</p>
+    <div id="gMsg" style="font-weight:800"></div>
+    <div class="mist" id="gMist"></div>
+    <div class="acts" style="justify-content:center"><button class="btn lav" id="gAgain">Ещё раз</button><button class="btn ghost" id="gMenu">Меню</button></div>
+  </div>
+
+  <div class="card">
+    <h3>📖 Все слова юнита</h3>
+    <p class="muted" style="margin-top:0">Слова, выделенные в учебнике жирным и хайлайтом, + полезная лексика уроков. Именно они в игре.</p>
+    <div class="wl" id="wordList"></div>
+  </div>
+</section>
+
+<!-- GRAMMAR -->
+<section class="view" id="v-grammar">
+  <div class="lhead" style="border-color:var(--peach)"><span class="pill" style="background:var(--peach-s);color:var(--peach)">Grammar</span><h2>Вся грамматика юнита</h2><div class="muted">Нажми на плашку, чтобы раскрыть правило и мини-проверку.</div></div>
+  <div id="gramBox"></div>
+</section>
+
+</main>
+
+<footer><div class="sig">by: @stefflyan</div></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= STATE ================= */
+var KEY="lv-unit1-v1";
+var S={xp:0,best:{},att:{},perf:{},open:{},game:{}};
+try{var raw=localStorage.getItem(KEY);if(raw){var o=JSON.parse(raw);for(var k in o)S[k]=o[k];}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+
+var RANKS=[
+ {x:0,e:"🐣",n:"Newbie"},{x:60,e:"📱",n:"Viewer"},{x:150,e:"💬",n:"Commenter"},
+ {x:300,e:"🎬",n:"Vlogger"},{x:500,e:"⭐",n:"Rising Star"},{x:800,e:"🔥",n:"Trending"},
+ {x:1200,e:"💎",n:"Influencer"},{x:1800,e:"👑",n:"Vlog Legend"}];
+function rankOf(xp){var r=0;for(var i=0;i<RANKS.length;i++)if(xp>=RANKS[i].x)r=i;return r;}
+function addXP(n,msg){
+  if(n<=0)return;
+  var before=rankOf(S.xp);S.xp+=n;save();
+  var after=rankOf(S.xp);
+  toast("+"+n+" XP"+(msg?" · "+msg:""));
+  if(after>before)setTimeout(function(){toast("🎉 Новый ранг: "+RANKS[after].e+" "+RANKS[after].n+"!")},1700);
+  drawRank();
+}
+function drawRank(){
+  var i=rankOf(S.xp),r=RANKS[i],nx=RANKS[i+1];
+  $("rEmo").textContent=r.e;$("rName").textContent=r.n;
+  if(nx){var p=(S.xp-r.x)/(nx.x-r.x)*100;$("rBar").style.width=p+"%";$("rText").textContent=S.xp+" XP · до «"+nx.n+"» "+(nx.x-S.xp)+" XP";}
+  else{$("rBar").style.width="100%";$("rText").textContent=S.xp+" XP · максимальный ранг!";}
+  var L=$("ladder");if(L){L.innerHTML=RANKS.map(function(k,j){return '<div class="rk '+(j<i?"got":"")+(j==i?" cur":"")+'"><div class="e">'+k.e+'</div><div class="n">'+k.n+'</div><div class="x">'+k.x+' XP</div></div>'}).join("");}
+}
+var tq=[],tbusy=false;
+function toast(t){tq.push(t);if(!tbusy)nextToast();}
+function nextToast(){if(!tq.length){tbusy=false;return;}tbusy=true;var el=$("toast");el.textContent=tq.shift();el.classList.add("on");setTimeout(function(){el.classList.remove("on");setTimeout(nextToast,350)},1500);}
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");}
+function norm(s){
+  return String(s).toLowerCase().replace(/[’‘`´]/g,"'")
+   .replace(/\bdo not\b/g,"don't").replace(/\bdoes not\b/g,"doesn't").replace(/\bcan ?not\b/g,"can't")
+   .replace(/\bhave not\b/g,"haven't").replace(/\bi am\b/g,"i'm")
+   .replace(/[.,!?;:"«»()]/g," ").replace(/\s+/g," ").trim();
+}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+/* ================= EXERCISE ENGINE =================
+ inline: [ans|alt|^hint]  -> input ; {opt|*right|opt} -> choice
+ types: inline(default) | match | mc | open
+*/
+function inl(str,ctx){
+  return str.replace(/\[([^\]]+)\]|\{([^}]+)\}/g,function(m,b,c){
+    if(b!==undefined){
+      var parts=b.split("|"),hint="",ans=[];
+      parts.forEach(function(p){if(p.charAt(0)=="^")hint=p.slice(1);else ans.push(p);});
+      var w=Math.max(4,Math.min(26,Math.max.apply(null,ans.map(function(a){return a.length}))+2));
+      ctx.n++;
+      return (ctx.sup?'<sup>'+ctx.n+'</sup>':'')+'<input class="blank" style="width:'+(w*0.62+1)+'em" data-a="'+esc(JSON.stringify(ans))+'" placeholder="'+esc(hint)+'" autocomplete="off" autocapitalize="off" spellcheck="false"><span class="fix">'+esc(ans[0])+'</span>';
+    } else {
+      var opts=c.split("|");ctx.n++;
+      return (ctx.sup?'<sup>'+ctx.n+'</sup>':'')+'<span class="cg">'+opts.map(function(o){var r=o.charAt(0)=="*";return '<button type="button" class="ch'+(r?' right':'')+'" data-c="'+(r?1:0)+'">'+(r?o.slice(1):o)+'</button>'}).join("")+'</span>';
+    }
+  });
+}
+function renderEx(ex,box,num){
+  var d=document.createElement("div");d.className="ex";d.id="ex-"+ex.id;
+  var h='<div class="exh"><div class="exn">'+(ex.n||num)+'</div><h4>'+ex.title+'</h4><span class="badge" data-b></span></div>';
+  if(ex.instr)h+='<p class="instr">'+ex.instr+'</p>';
+  if(ex.bank)h+='<div class="bank">'+ex.bank.map(function(w){return '<span>'+w+'</span>'}).join("")+'</div>';
+  if(ex.pre)h+=ex.pre;
+  var t=ex.type||"inline";
+  if(t=="inline"){
+    var ctx={n:0,sup:!!ex.para};
+    if(ex.para)h+='<div class="reading para">'+ex.items.map(function(p){return '<p>'+inl(p,ctx)+'</p>'}).join("")+'</div>';
+    else if(ex.plain)h+='<div class="plain">'+ex.items.map(function(p){return '<p>'+inl(p,ctx)+'</p>'}).join("")+'</div>';
+    else h+='<ol class="items">'+ex.items.map(function(p){return '<li>'+inl(p,ctx)+'</li>'}).join("")+'</ol>';
+  } else if(t=="match"){
+    var ops=ex.opts.map(function(o){return typeof o=="string"?{v:o,t:o}:o});
+    if(ex.showOpts)h+='<div class="opts">'+ops.map(function(o){return '<div><b>'+o.v+'</b> '+o.t+'</div>'}).join("")+'</div>';
+    h+='<ol class="items">'+ex.items.map(function(it){
+      var a=[].concat(it.a);
+      return '<li><div class="mrow"><div class="q">'+it.q+'</div><select data-a="'+esc(JSON.stringify(a))+'"><option value="">— выбери —</option>'+ops.map(function(o){return '<option value="'+esc(o.v)+'">'+(ex.showOpts?o.v:o.t)+'</option>'}).join("")+'</select><span class="fix">'+esc(ex.showOpts?a.join(" / "):(ops.filter(function(o){return a.indexOf(o.v)>-1}).map(function(o){return o.t}).join(" / ")))+'</span></div></li>';
+    }).join("")+'</ol>';
+  } else if(t=="mc"){
+    h+='<ol class="items">'+ex.items.map(function(it){
+      var a=[].concat(it.a);
+      return '<li><div class="mcq">'+it.q+'</div><div class="mco cg">'+it.o.map(function(o,i){var r=a.indexOf(i)>-1;return '<button type="button" class="ch'+(r?' right':'')+'" data-c="'+(r?1:0)+'">'+o+'</button>'}).join("")+'</div></li>';
+    }).join("")+'</ol>';
+  } else if(t=="open"){
+    h+='<ol class="items">'+ex.items.map(function(q){return '<li>'+q+'<textarea placeholder="Напиши ответ по-английски…"></textarea></li>'}).join("")+'</ol>';
+  }
+  if(ex.post)h+=ex.post;
+  if(t=="open")h+='<div class="acts"><button class="btn mint" data-act="open">Готово ✓</button><span class="res"></span></div>';
+  else h+='<div class="acts"><button class="btn" data-act="check">Проверить</button><button class="btn ghost" data-act="show">Показать ответы</button><button class="btn ghost" data-act="reset">Заново</button><span class="res"></span></div>';
+  d.innerHTML=h;box.appendChild(d);
+  d.addEventListener("click",function(e){
+    var b=e.target.closest(".ch");
+    if(b){var g=b.parentNode;g.querySelectorAll(".ch").forEach(function(x){x.classList.remove("sel","ok","bad")});b.classList.add("sel");return;}
+    var a=e.target.closest("[data-act]");if(!a)return;
+    var act=a.dataset.act;
+    if(act=="check")checkEx(ex,d);
+    if(act=="show"){d.classList.toggle("reveal");a.textContent=d.classList.contains("reveal")?"Скрыть ответы":"Показать ответы";}
+    if(act=="reset"){d.querySelectorAll("input.blank").forEach(function(i){i.value="";i.classList.remove("ok","bad")});d.querySelectorAll("select").forEach(function(s){s.value="";s.classList.remove("ok","bad")});d.querySelectorAll(".ch").forEach(function(x){x.classList.remove("sel","ok","bad")});d.classList.remove("reveal");d.querySelector('[data-act=show]').textContent="Показать ответы";d.querySelector(".res").textContent="";}
+    if(act=="open"){
+      var txt=0;d.querySelectorAll("textarea").forEach(function(x){txt+=x.value.trim().length});
+      var r=d.querySelector(".res");
+      if(txt<15){r.className="res meh";r.textContent="Напиши чуть подробнее 🙂";return;}
+      r.className="res good";r.textContent="Отлично! Обсуди ответы с учителем.";
+      if(!S.open[ex.id]){S.open[ex.id]=1;save();addXP(3,"Think & share");}
+      paintBadge(ex,d);
+    }
+  });
+  d.addEventListener("keydown",function(e){if(e.key=="Enter"&&e.target.classList.contains("blank")){var all=[].slice.call(d.querySelectorAll("input.blank"));var i=all.indexOf(e.target);if(all[i+1])all[i+1].focus();else checkEx(ex,d);}});
+  paintBadge(ex,d);
+  return d;
+}
+function checkEx(ex,d){
+  var tot=0,ok=0;
+  d.querySelectorAll("input.blank").forEach(function(i){
+    tot++;var ans=JSON.parse(i.dataset.a);var good=ans.some(function(a){return norm(a)==norm(i.value)});
+    i.classList.remove("ok","bad");i.classList.add(good?"ok":"bad");if(good)ok++;
+  });
+  d.querySelectorAll("select").forEach(function(s){
+    tot++;var ans=JSON.parse(s.dataset.a);var good=ans.indexOf(s.value)>-1;
+    s.classList.remove("ok","bad");s.classList.add(good?"ok":"bad");if(good)ok++;
+  });
+  d.querySelectorAll(".cg").forEach(function(g){
+    tot++;var s=g.querySelector(".ch.sel");
+    g.querySelectorAll(".ch").forEach(function(x){x.classList.remove("ok","bad")});
+    if(s){var good=s.dataset.c=="1";s.classList.add(good?"ok":"bad");if(good)ok++;}
+  });
+  var id=ex.id;S.att[id]=(S.att[id]||0)+1;
+  var best=S.best[id]||0,gain=0,msg="";
+  if(ok>best){gain+=(ok-best)*2;S.best[id]=ok;}
+  var r=d.querySelector(".res");
+  if(ok==tot){
+    if(!S.perf[id]){ if(S.att[id]==1){S.perf[id]=2;gain+=15;msg="идеально с первой попытки ⭐";} else {S.perf[id]=1;gain+=5;msg="идеально!";} }
+    r.className="res good";r.textContent="🎉 "+ok+" / "+tot+" — идеально!";
+  } else {r.className="res meh";r.textContent=ok+" / "+tot+" — исправь красные ответы и проверь ещё раз";}
+  S["tot_"+id]=tot;save();
+  addXP(gain,msg);
+  paintBadge(ex,d);refreshProgress();
+}
+function paintBadge(ex,d){
+  var b=d.querySelector("[data-b]");if(!b)return;b.className="badge";
+  if(ex.type=="open"){if(S.open[ex.id]){b.classList.add("done");b.textContent="✓ сделано";}else b.textContent="Think & share";return;}
+  if(S.perf[ex.id]==2){b.classList.add("perf");b.textContent="⭐ идеально";}
+  else if(S.perf[ex.id]==1){b.classList.add("done");b.textContent="✓ 100%";}
+  else if(S.best[ex.id]!=null){b.textContent=S.best[ex.id]+" / "+(S["tot_"+ex.id]||"?");}
+  else b.textContent="не начато";
+}
+
+/* ================= LESSON DATA ================= */
+var LESSONS=[
+{id:"1.1",kind:"Vocabulary",title:"Daily routines",col:"var(--plum)",goal:"Talk about daily routines.",
+ key:'<h4>🔑 Главное</h4>Глаголы распорядка дня всегда идут <b>в паре со словом</b> — учи их целыми фразами: <mark>get up</mark>, <mark>get dressed</mark>, <mark>have a shower</mark>, <mark>have breakfast</mark>, <mark>brush my teeth</mark>, <mark>take the bus</mark>, <mark>do my homework</mark>, <mark>go to bed</mark>.',
+ ex:[
+ {id:"1.1-5",n:"5",title:"Real English",instr:"Match the highlighted phrases to their meaning.",type:"match",showOpts:true,
+  opts:[{v:"A",t:"It's a good idea."},{v:"B",t:"Well done!"},{v:"C",t:"many"},{v:"D",t:"a group of people"},{v:"E",t:"amazing"},{v:"F",t:"It's OK."}],
+  items:[{q:"Hi <mark>guys</mark>. I'm Zara!",a:"D"},{q:"<mark>Why not</mark> try something like this?",a:"A"},{q:"But <mark>don't worry about it</mark> – just do what's natural!",a:"F"},{q:"So <mark>congratulations</mark> – you're now a vlogger, like us!",a:"B"},{q:"<mark>Lots of</mark> you want to know how we do it.",a:"C"},{q:"And this is our <mark>awesome</mark> vlog.",a:"E"}]},
+ {id:"1.1-6",n:"6",title:"Vocabulary: phrases",instr:"Complete the phrases with the verbs below.",bank:["brush","do","get","go","have","relax","take","watch"],
+  items:["[go] home / to school / to bed","[brush] my teeth / hair","[take] the bus","[do] my homework","[watch] TV / music videos","[relax] with my sister","[get] up / dressed","[have] a shower / breakfast / lunch / dinner / guitar lessons"]},
+ {id:"1.1-8",n:"8",title:"My typical day",instr:"Complete the text.",para:true,
+  pre:'',
+  items:["I get [up] at 7.30 a.m. Then I have a [shower] and brush my hair and my [teeth]. My family and I have [breakfast] together in the kitchen – I eat toast. Then my brother and I go [to] school. We [take] the bus because our school is fifteen kilometres away. On the bus, in the mornings, we relax and [watch] videos on our phones. At school, we [have] lessons until 3.30 p.m. and then we [go] home at 3.45 p.m. My school friends and I often [do] our homework on the bus before we get home."]},
+ {id:"1.1-vb4",n:"VB",title:"Vocabulary booster: correct alternative",instr:"Choose the correct alternative.",
+  items:["I {do|*have} a shower in the evening, not in the morning.","I {*get|take} dressed after I have breakfast.","I {go|*have} lunch at school and dinner at home.","I {do|*take} the bus to my friend's house at the weekend.","I {go|*have} guitar lessons on Tuesdays after school.","I {*go|go to} school at 8.30 a.m. and I {*go|go to} home at 4 p.m.","I {*do|get} my homework after dinner."]},
+ {id:"1.1-vb5",n:"VB",title:"Vocabulary booster: definitions",instr:"Complete the definitions with the phrases below.",bank:["check your timetable","get out of bed","get ready for tomorrow","have a lie-in","have a rest","wake up late"],
+  items:["When you're tired, you often sit or lie down and [have a rest].","When you [get ready for tomorrow], you check that you have everything you need for the next day, for example clothes and books for school.","You [check your timetable] to get information about the lessons, sports and other things you need to do the next day or in the next week.","When you [have a lie-in], you stay in bed in the morning because you don't have to get up early.","When you [wake up late], you need to get ready very quickly so that you aren't late for school.","You don't need to [get out of bed] early at the weekend because there's no school."]}
+ ]},
+{id:"1.2",kind:"Grammar",title:"Present simple: affirmative",col:"var(--peach)",goal:"Use the present simple affirmative to talk about my school day.",
+ key:'<h4>🔑 Главное</h4>С <b>he / she / it</b> к глаголу добавляем <mark>-s</mark>: she <mark>gets</mark> up. После <b>-o, -ss, -x, -ch, -sh</b> — <mark>-es</mark>: goes, watches. Согласная + <b>-y</b> → <mark>-ies</mark>: studies. <b>have → has</b>. Подробно — во вкладке «Грамматика».',
+ ex:[
+ {id:"1.2-3",n:"3",title:"Complete the rules",instr:"Complete the examples in the grammar box.",
+  pre:'<div class="tip">A — present simple для <b>регулярных действий, распорядка дня и фактов</b>. B — с I / you / we / they глагол без изменений. C — с he / she / it добавляем -s или -es.</div>',
+  items:["D: We add -es when a verb ends with -o, -ss, -x, -ch, -sh. She vlogs before she [goes] to school. She [relaxes] with me in the evening.","E: The consonant + -y changes to -ies. She [studies] in the library.","F: The verb <i>have</i> is irregular. He [has] dinner."]},
+ {id:"1.2-4",n:"4",title:"Choose the correct alternative",items:["You and Alona {takes|*take} the train to school.","His sister {*goes|go} to the same school as me.","My friends {gets|*get} dressed in the morning.","I {does|*do} my homework after school.","My cousin and I {has|*have} music lessons together.","Paulo {*watches|watch} TV every evening."]},
+ {id:"1.2-5",n:"5",title:"A typical school day in South Korea",instr:"Complete the blog entry with the present simple affirmative form of the verbs in brackets.",para:true,
+  items:["Hi guys. I [want] (want) to tell you about my cousin Eun-a. She's from South Korea and she [goes] (go) to a high school in Seoul. Every day, she [gets up] (get up) at 6.30 a.m., then she [takes] (take) the bus to school at 7.30. Her school [starts] (start) at 8.00. In her lunch break, she [relaxes] (relax) and [watches] (watch) anime, but lots of students [sleep] (sleep) at their desks because they are very tired. Eun-a's school [finishes] (finish) at 4.30 p.m., but it isn't time to go home. She and her classmates [clean] (clean) the classroom floor, then they [have] (have) dinner. Eun-a [does] (do) her homework and [studies] (study) at school together with her classmates until 11 p.m. She and her friends [go] (go) to bed after 1 a.m. every night! Zzzzzzzzzz!"]},
+ {id:"1.2-6",n:"6",title:"Pronunciation: -s",instr:"How do you pronounce the -s in the third person singular verbs? (takes = /s/, has = /z/, uses = /ɪz/)",type:"match",
+  opts:["/s/","/z/","/ɪz/"],
+  items:[{q:"brushes",a:"/ɪz/"},{q:"cooks",a:"/s/"},{q:"does",a:"/z/"},{q:"eats",a:"/s/"},{q:"finishes",a:"/ɪz/"},{q:"gets",a:"/s/"},{q:"goes",a:"/z/"},{q:"likes",a:"/s/"},{q:"lives",a:"/z/"},{q:"relaxes",a:"/ɪz/"},{q:"studies",a:"/z/"},{q:"watches",a:"/ɪz/"}]},
+ {id:"1.2-gb1",n:"GB",title:"Grammar booster: correct alternative",items:["I {*take|takes} the bus to school.","School {start|*starts} at 8.30 a.m.","We {*have|has} lunch at school.","My sister {do|*does} her homework on the bus.","You {*like|likes} the same music as me.","All my friends {*watch|watches} videos on their phones.","I {*listen|listens} to music in bed.","Toby {cook|*cooks} on Sundays."]},
+ {id:"1.2-9",n:"9",title:"Think & share",type:"open",instr:"You want to make a 30-second vlog about your daily routines. Write a plan.",items:["Start your vlog – say hello.","Talk about your daily activities.","Finish your video – say goodbye. Give it a title."]}
+ ]},
+{id:"1.3",kind:"Listening",title:"Vlogging",col:"var(--bad)",goal:"Predict before you listen.",
+ key:'<div class="strategy" style="margin:0"><h4>STRATEGY · Predicting before you listen</h4>Перед прослушиванием <mark>прочитай заголовок и посмотри на фото</mark> людей, предметов и действий. <mark>Угадай, какие слова ты услышишь</mark> — так ты лучше поймёшь текст.</div><p style="margin:10px 0 0">Слова темы: <mark>vlog</mark>, <mark>vlogger</mark>, <mark>channel</mark>, <mark>subscribe</mark>, <mark>comments</mark>, <mark>pros and cons</mark>, fashion · beauty products · music and dance · video games.</p><p class="muted" style="margin:6px 0 0;font-size:14px">Упражнения 3–5 учебника — с аудио 1.06, их выполняем на уроке. Ниже — проверка по теме.</p>',
+ ex:[
+ {id:"1.3-a",n:"1",title:"What type of vlogger?",instr:"Read about the vloggers from Larisa's email. What type of vlogger is each person?",type:"match",
+  opts:["a fashion vlogger","a beauty vlogger","a music vlogger","a video games vlogger"],
+  items:[{q:"Sam buys lots of amazing clothes for his job.",a:"a fashion vlogger"},{q:"Demi uses great products.",a:"a beauty vlogger"},{q:"Megan plays the guitar in her videos.",a:"a music vlogger"},{q:"Lukas and Hanna play video games every day.",a:"a video games vlogger"}]},
+ {id:"1.3-b",n:"2",title:"Pros or cons?",instr:"Is it a pro (good thing) or a con (bad thing) about vlogging?",type:"mc",
+  items:[{q:"You make lots of money.",o:["Pro +","Con –"],a:0},{q:"You have fun.",o:["Pro +","Con –"],a:0},{q:"You can't relax.",o:["Pro +","Con –"],a:1},{q:"Some people write bad comments about you.",o:["Pro +","Con –"],a:1},{q:"You haven't got time for your friends.",o:["Pro +","Con –"],a:1},{q:"You use great products.",o:["Pro +","Con –"],a:0}]},
+ {id:"1.3-c",n:"3",title:"Strategy check",type:"mc",items:[{q:"What do you do <b>before</b> you listen?",o:["Write down all the words I hear","Read the title, look at the photos and guess the words","Close my eyes and wait"],a:1},{q:"Why is it a good idea?",o:["It helps you understand better.","It makes the recording shorter.","You don't need to listen then."],a:0}]},
+ {id:"1.3-7",n:"4",title:"Think & share",type:"open",items:["Do you want to be a vlogger? Why? / Why not?"]}
+ ]},
+{id:"1.4",kind:"Global skills",title:"Managing your time",col:"var(--mint)",goal:"Understand how to manage your time.",
+ key:'<h4>🔑 Главное</h4><mark><b>at</b></mark> + время (at 6.30, at night, at the weekend) · <mark><b>on</b></mark> + дни и даты (on Monday, on 8th June) · <mark><b>in</b></mark> + части дня, месяцы, сезоны, годы (in the evening, in February, in 2010).<div class="gloss"><b>break</b> (v) – separate into smaller pieces · <b>a break</b> (n) – a short rest or stop</div>',
+ ex:[
+ {id:"1.4-3",n:"3",title:"How to manage your time",instr:"Complete the tips with the words below.",bank:["daily","homework","minutes","notes","routine","tasks","week"],
+  items:["Every Sunday, plan your [week].","Make a list of the important tasks you need to do, e.g. your [homework].","Find out how much time you spend on each [daily] activity.","Make [notes] on your phone or in a diary.","Break your big projects into small [tasks].","Plan study breaks: every two hours, relax for fifteen [minutes].","Have the same [routine] every day."]},
+ {id:"1.4-4",n:"4",title:"Prepositions of time: rules",instr:"Complete the box with at, on or in.",
+  items:["[in]: parts of the day, months, seasons, years — <span class='ex-l'>I go back to school in September.</span>","[on]: dates, days, parts of a day of the week — <span class='ex-l'>We have art classes on Mondays.</span>","[at]: times, night, weekend, special occasions lasting more than a day — <span class='ex-l'>I relax at the weekend.</span>"]},
+ {id:"1.4-5",n:"5",title:"At, on or in?",instr:"Put the examples in the right part of the diagram.",type:"match",opts:["at","on","in"],
+  items:[{q:"2 a.m.",a:"at"},{q:"January",a:"in"},{q:"midnight",a:"at"},{q:"Monday",a:"on"},{q:"the afternoon",a:"in"},{q:"the summer",a:"in"},{q:"23rd August",a:"on"},{q:"2018",a:"in"},{q:"my birthday",a:"on"},{q:"night",a:"at"},{q:"the weekend",a:"at"},{q:"1 week",a:"in"}]},
+ {id:"1.4-6",n:"6",title:"Complete the sentences",instr:"Complete the sentences with prepositions of time.",
+  items:["The music school party is [on] the 14th of October.","I go home [at] half past five.","[On] Sunday evenings, you make a list of the things you need to do [in] the week.","I have extra classes [on] Tuesdays.","Write down all the things you do [in] the morning.","I have a hot shower [at] night.","You can study and relax [on] school days."]},
+ {id:"1.4-gb",n:"GB",title:"Grammar booster: on, at or in",items:["The party is [on] Saturday.","My birthday is [in] May.","The concert finishes [at] 8 p.m.","I relax [at] the weekend.","I do my homework [in] the evening.","There is no school [in] the afternoon.","I go to my grandma's house [in] the summer."]},
+ {id:"1.4-gb1",n:"GB",title:"Grammar booster: match",type:"match",showOpts:true,
+  opts:[{v:"A",t:"7.30 p.m. outside the cinema."},{v:"B",t:"night because I'm always tired after a long day!"},{v:"C",t:"the morning after breakfast."},{v:"D",t:"July and I can't wait!"},{v:"E",t:"1 p.m. when she's at work."}],
+  items:[{q:"I brush my teeth in",a:"C"},{q:"My mum has lunch at",a:"E"},{q:"I can meet you at",a:"A"},{q:"I sleep very well at",a:"B"},{q:"The school holidays start in",a:"D"}]}
+ ]},
+{id:"1.5",kind:"Vocabulary",title:"Free-time activities",col:"var(--plum)",goal:"Talk about hobbies.",
+ key:'<h4>🔑 12 cheap, fun hobby ideas</h4><mark>go for a walk</mark> · <mark>go for a run</mark> · <mark>ride a bike</mark> · <mark>take photos</mark> · <mark>read a comic</mark> · <mark>make a cake</mark> · <mark>listen to music</mark> · <mark>draw a picture</mark> · <mark>play a board game</mark> · <mark>tidy your room</mark> · <mark>learn a language</mark> · <mark>design a website</mark><div class="gloss"><b>get fit</b> – do exercise</div>',
+ ex:[
+ {id:"1.5-4",n:"4",title:"Name the activity",instr:"Find the highlighted words in the article. Name …",type:"match",
+  opts:["go for a walk","go for a run","ride a bike","take photos","read a comic","make a cake","listen to music","draw a picture","play a board game","tidy your room","learn a language","design a website"],
+  items:[{q:"an activity that includes art and technology (1)",a:["take photos","design a website"]},{q:"an activity that includes art and technology (2)",a:["take photos","design a website"]},{q:"a fun group activity that is a competition",a:"play a board game"},{q:"a type of exercise (1)",a:["go for a walk","go for a run","ride a bike"]},{q:"a type of exercise (2)",a:["go for a walk","go for a run","ride a bike"]},{q:"a type of exercise (3)",a:["go for a walk","go for a run","ride a bike"]},{q:"an activity you do on your own with a book",a:"read a comic"},{q:"an activity you do with your favourite bands",a:"listen to music"},{q:"an activity you do with things in your bedroom",a:"tidy your room"},{q:"an activity where you cook something at home",a:"make a cake"},{q:"an activity you do in an English or Japanese class",a:"learn a language"},{q:"an activity you do on paper in an art class",a:"draw a picture"}]},
+ {id:"1.5-8",n:"8",title:"Complete the sentences",items:["We study grammar when we [learn] a language.","Aunt Geeta [goes] for a run in the morning to get fit.","My friends [ride] a bike to school, but I take the bus.","Darius [tidies] his room on Sunday mornings.","I [listen] to music at night on my headphones.","My brother and I [read] comics at night before bed.","On Saturdays, I [go] for a walk in my local park.","Mum [takes] lots of photos of me and my sister."]},
+ {id:"1.5-10",n:"10",title:"Think & share",type:"open",items:["What are your top-five activities? Where and when do you do them? Why do you like them?"]}
+ ]},
+{id:"1.6",kind:"Grammar",title:"Present simple: negative & yes/no questions",col:"var(--peach)",goal:"Use the present simple negative and yes/no questions to talk about free time.",
+ key:'<h4>🔑 Главное</h4>Отрицание: <mark>don\'t</mark> / <mark>doesn\'t</mark> + глагол <b>без -s</b>. Вопрос: <mark>Do</mark> / <mark>Does</mark> + подлежащее + глагол. Краткий ответ: <mark>Yes, I do. / No, she doesn\'t.</mark><br>Слова: <mark>active</mark> · <mark>creative</mark> · <mark>practical</mark>',
+ ex:[
+ {id:"1.6-5",n:"5",title:"Present simple: negative",instr:"Complete the examples in the grammar box.",items:["I / you / we / they [don't] spend much time at home.","He / she / it [doesn't] like it."]},
+ {id:"1.6-6",n:"6",title:"Make these sentences negative",instr:"Напиши всё предложение (можно don't или do not).",
+  items:["Bako and I like rock music. → [Bako and I don't like rock music.]","I design websites in my free time. → [I don't design websites in my free time.]","Lucas plays the piano. → [Lucas doesn't play the piano.]","My cousins go to school with me. → [My cousins don't go to school with me.]","You study Spanish. → [You don't study Spanish.]","My teacher tidies the classroom every day. → [My teacher doesn't tidy the classroom every day.]"]},
+ {id:"1.6-7",n:"7",title:"Present simple: yes/no questions",instr:"Complete the grammar rules.",items:["[Do] I / you / we / they listen to music? — Yes, I [do]. / No, I [don't].","[Does] he / she / it like sport? — Yes, she [does]. / No, she [doesn't]."]},
+ {id:"1.6-8",n:"8",title:"Questions and answers",instr:"Order the words to make questions and answers.",
+  items:["they / music / listen to / do / ? → [Do they listen to music?] — don't / no, / they → [No, they don't.]","Amir / does / homework / do / ? → [Does Amir do homework?] — he / does / yes, → [Yes, he does.]","your room / tidy / you / do / ? → [Do you tidy your room?] — do / I / yes, → [Yes, I do.]","take / do / the bus / you and Jo / ? → [Do you and Jo take the bus?] — we / yes, / do → [Yes, we do.]","Ana / does / French / speak / ? → [Does Ana speak French?] — doesn't / no, / she → [No, she doesn't.]"]},
+ {id:"1.6-q",n:"Q",title:"Quiz: What your free-time activities say about you",instr:"Choose the correct form.",
+  items:["{Do|*Does|Is} your room look tidy at the weekend? — No, it {don't|*doesn't}.","{*Do|Does} you like sport and exercise? — Sport {don't interest|*doesn't interest} me much.","{*Do|Does} you listen to music? — Sometimes. I {*don't|doesn't} do it every day.","{*Do|Does} you spend much time at home on Sundays? — No, I {*don't|doesn't}!"]},
+ {id:"1.6-12",n:"12",title:"Find somebody who …",type:"open",instr:"Make questions for the classmates.",items:["… rides a bike to school. → <i>Do you ride a bike to school?</i>","… tidies their room on Saturdays.","… speaks two languages.","… goes for a run every day."]}
+ ]},
+{id:"1.7",kind:"Reading",title:"Teenage stress",col:"var(--lav)",goal:"Identify the main ideas in an article about teenage stress.",
+ key:'<h4>🔑 Слова</h4><mark><b>stressed</b></mark> /strest/ – so worried and tired that you can\'t relax<br><mark><b>stress</b></mark> /stres/ – worry caused by the problems in your life<div class="strategy"><h4>STRATEGY · Identifying main ideas</h4>Чтобы понять главные идеи, ищи <mark>content words</mark> — существительные, глаголы и прилагательные. Они несут важную информацию.</div>',
+ ex:[
+ {id:"1.7-1",n:"1",title:"Noun or adjective?",type:"mc",items:[{q:"<b>stressed</b> – so worried and tired that you can't relax",o:["noun","adjective"],a:1},{q:"<b>stress</b> – worry caused by the problems in your life",o:["noun","adjective"],a:0}]},
+ {id:"1.7-6",n:"6",title:"Match headings to paragraphs",instr:"Read the text. Match headings A–F to paragraphs 1–6.",type:"match",showOpts:true,
+  pre:'<div class="reading"><h4>Some people say that today\'s teenagers do too many after-school activities. Do you agree?</h4><p><b>Louise: No, I don\'t.</b></p><p><b>1</b> It\'s good to be busy. Stress is a normal part of life, especially at work, so students need to understand this at high school.</p><p><b>2</b> Many high school students do about four hours of homework per subject a week, and they also go to after-school clubs or language classes. Busy students learn to plan their schoolwork, and then they have time for their favourite activities. They understand that it isn\'t possible to do everything!</p><p><b>3</b> I think that teens who have lots of free time do more unhealthy things, for example, they spend hours on their phones or play video games. Instead, at after-school clubs, teens can learn practical skills, like website design or how to make meals. And team sports are very good for students – they get fit and learn to work together.</p><p><b>Max: Yes, I do.</b></p><p><b>4</b> Doing things all at the same time isn\'t good for us. When I\'m stressed, I don\'t work well. Some of my classmates do their homework very quickly because they have lots of activities in the afternoon, but they don\'t always get good results.</p><p><b>5</b> After a long day at school, we need some time to relax and do nothing. We just want to go home and watch TV or listen to music on our phones because we\'re very tired and we need a break! People with more free time are also more creative and do things like draw or make videos.</p><p><b>6</b> My friends and I want to do more activities after school, but we also need to do all our homework and make our teachers happy. And we\'re stressed because we want to do fun things in the afternoons, like ride our bikes outdoors, read comics or play board games, but our parents tell us that we haven\'t got time because of our schoolwork …</p></div>',
+  opts:[{v:"A",t:"Teenagers need to have free time."},{v:"B",t:"Stress teaches teenagers how to manage their time."},{v:"C",t:"Teenagers and adults want different things."},{v:"D",t:"Too much free time is bad for teenagers."},{v:"E",t:"Stress is unhealthy for teenagers."},{v:"F",t:"Stress prepares teenagers for their future."}],
+  items:[{q:"Paragraph 1",a:"F"},{q:"Paragraph 2",a:"B"},{q:"Paragraph 3",a:"D"},{q:"Paragraph 4",a:"E"},{q:"Paragraph 5",a:"A"},{q:"Paragraph 6",a:"C"}]},
+ {id:"1.7-7",n:"7",title:"Short answers",instr:"Answer the questions with short answers.",type:"mc",
+  items:[{q:"Do high school students get a lot of homework?",o:["Yes, they do.","No, they don't."],a:0},{q:"Do all students go home when lessons finish?",o:["Yes, they do.","No, they don't. (They go to after-school clubs or language classes.)"],a:1},{q:"Do teenagers play video games at after-school clubs?",o:["Yes, they do.","No, they don't. (They learn practical skills.)"],a:1},{q:"Does Max think busy students work badly?",o:["Yes, he does.","No, he doesn't."],a:0},{q:"Does Max think teenagers watch TV because they are bored?",o:["Yes, he does.","No, he doesn't. (They're very tired.)"],a:1},{q:"Do teenagers and adults want the same things?",o:["Yes, they do.","No, they don't."],a:1}]},
+ {id:"1.7-8",n:"8",title:"Think & share",type:"open",items:["Do you agree or disagree with Louise and Max? Why?"]}
+ ]},
+{id:"1.8",kind:"Speaking",title:"Likes and dislikes",col:"var(--ok)",goal:"Use consonant-vowel linking to talk about likes and dislikes.",
+ key:'<h4>🔑 Phrasebook</h4>😍 <mark>love</mark> · 🙂 <mark>like</mark>, <mark>enjoy</mark> · 🙁 <mark>don\'t like</mark> · 😠 <mark>hate</mark>, <mark>can\'t stand</mark><br><b>Agreeing:</b> I love football. → <mark>Me too. / So do I.</mark> · I don\'t like singing. → <mark>Me neither. / Neither do I.</mark> · I can\'t stand reading. → <mark>Me neither. / Neither can I.</mark><br><b>Disagreeing:</b> I love cooking. → <mark>Really? I don\'t.</mark> · I don\'t like drawing. → <mark>Really, I do!</mark> · I can\'t stand orchestra. → <mark>Really? I love it!</mark><div class="strategy"><h4>STRATEGY · Consonant-vowel linking</h4>Если слово кончается на <b>согласный звук</b>, а следующее начинается с <b>гласного</b>, они звучат как одно слово: <span class="ex-l">It\'s‿a fun game.</span></div>',
+ ex:[
+ {id:"1.8-3",n:"3",title:"Phrasebook: emojis",instr:"Match the verbs to the emojis.",type:"match",opts:["😍","🙂","🙁","😠"],
+  items:[{q:"love",a:"😍"},{q:"like",a:"🙂"},{q:"enjoy",a:"🙂"},{q:"don't like",a:"🙁"},{q:"hate",a:"😠"},{q:"can't stand",a:"😠"}]},
+ {id:"1.8-4",n:"4",title:"Complete the dialogues",bank:["don't","do (x2)","hate","like","neither","Really","So"],plain:true,
+  items:["<b>1</b>","<b>A</b> I love cooking.","<b>B</b> [So] do I! Do you [like] making cakes?","<b>A</b> Yes, I [do]. I love it! But I really don't like tidying the kitchen at the end.","<b>B</b> Me [neither]! It's boring.","<b>2</b>","<b>A</b> I like drawing comics.","<b>B</b> Really? I [don't]. I don't enjoy school art classes.","<b>A</b> Neither [do] I. And I don't like science.","<b>B</b> [Really]? I do. Do you [hate] maths too?","<b>A</b> No, I don't. It's great."]},
+ {id:"1.8-ag",n:"+",title:"Agree or disagree",instr:"Choose the correct reply.",type:"mc",
+  items:[{q:"I love football. (agree)",o:["So do I.","Neither do I.","Really? I don't."],a:0},{q:"I don't like singing. (agree)",o:["So do I.","Me neither.","Really, I do!"],a:1},{q:"I can't stand reading. (agree)",o:["Neither do I.","Neither can I.","So can I."],a:1},{q:"I love cooking. (disagree)",o:["Me too.","Really? I don't.","Neither do I."],a:1},{q:"I don't like drawing. (disagree)",o:["Really, I do!","Me neither.","So do I."],a:0}]},
+ {id:"1.8-6",n:"6",title:"Linking: yes or no?",instr:"Is there consonant-vowel linking between these words?",type:"mc",
+  items:[{q:"I <b>love it</b>.",o:["linking ✓","no linking"],a:0},{q:"She <b>plays football</b>.",o:["linking ✓","no linking"],a:1},{q:"<b>twice a</b> week",o:["linking ✓","no linking"],a:0},{q:"<b>What else</b> can we do?",o:["linking ✓","no linking"],a:0},{q:"I <b>like music</b>.",o:["linking ✓","no linking"],a:1},{q:"I can't <b>stand art</b>.",o:["linking ✓","no linking"],a:0}]},
+ {id:"1.8-8",n:"8",title:"Think & share",type:"open",instr:"Write your opinions using the Phrasebook.",items:["getting up early","tidying my room","playing board games","video games"]}
+ ]},
+{id:"1.9",kind:"Writing",title:"A personal profile",col:"var(--sky)",goal:"Use pronouns, adverbs and conjunctions in a personal profile.",
+ key:'<div class="strategy" style="margin-top:0"><h4>STRATEGY · Pronouns or adverbs to avoid repetition</h4>Вместо повтора подлежащего или дополнения используй <mark>местоимения</mark> (he, me, her …) или <mark>наречие there</mark>.</div><h4>LANGUAGE FOCUS · and, but, or</h4><mark><b>and</b></mark> — похожие идеи · <mark><b>but</b></mark> — противопоставление · <mark><b>or</b></mark> — в отрицании или при выборе из двух.<br><span class="ex-l">I have chess classes and I learn Mandarin Chinese. · My mum loves tidying the house, but I hate it. · I haven\'t got any brothers or sisters. · I watch videos about history or biology.</span>',
+ ex:[
+ {id:"1.9-4",n:"4",title:"What do these pronouns replace?",type:"mc",
+  pre:'<div class="reading"><h4>All about me — Jan</h4><p>I\'m Jan. I\'m seventeen and I\'m Polish. I haven\'t got any brothers or sisters. I go to Grantchester Boys\' College in the UK. It\'s a boarding school, so I live <b>there</b>. This is my new student vlog!</p><p><b>My life</b> I love living with other students and I\'ve got lots of new friends. Here, you choose three or four subjects for A levels. My subjects are history, computer science and art. It\'s difficult to study in English, but I love <b>it</b>!</p><p><b>My interests</b> After school, I have chess classes and I learn Mandarin Chinese. In the evenings, I relax with my friends. <b>We</b> watch TV together or <b>we</b> play games on the Xbox. I\'m happy so I don\'t want to go home, but my family misses me!</p><h4>All about me — Labani</h4><p>Hello, my name\'s Labani. I\'m fourteen and I\'ve got three little brothers. Lots of people like our family vlog, <i>Homeschool is Cool!</i> In fact, 20,000 people watch <b>us</b>.</p><p><b>My life</b> I get up early and have a big breakfast. I don\'t go to school – I learn at home. I really like maths, so it is the first subject I study. Then I watch videos about technology or engineering on the internet. I enjoy <b>them</b> because <b>they</b> are very interesting. I don\'t feel stressed because I plan my own timetable.</p><p><b>My interests</b> Every day, I help make meals. My mum loves tidying the house, but I hate it. My brothers like riding their bikes, but I enjoy listening to music and taking care of horses instead.</p></div>',
+  items:[{q:"… I live <b>there</b>.",o:["in Poland","at Grantchester Boys' College","at home"],a:1},{q:"… I love <b>it</b>!",o:["studying in English","history","my vlog"],a:0},{q:"… <b>we</b> play games on the Xbox.",o:["Jan and his family","Jan and his friends","Labani and her brothers"],a:1},{q:"… 20,000 people watch <b>us</b>.",o:["Labani and her family","Labani's friends","the teachers"],a:0},{q:"I enjoy <b>them</b> because <b>they</b> are interesting.",o:["her brothers","videos about technology or engineering","horses"],a:1}]},
+ {id:"1.9-5",n:"5",title:"Replace the words in bold",instr:"Replace the words in bold with the pronouns or adverbs below.",bank:["he","his","it","them","there","us","we"],
+  items:["I enjoy learning English – <b>English</b> → [It] is a very important language.","My friend Leon likes reading books and <b>Leon</b> → [he] has got lots of <b>books</b> → [them]. <b>Leon's</b> → [His] favourite book is <i>The Lord of the Rings</i>.","My sister and I hate taking the bus to school – <b>my sister and I</b> → [we] like riding our bikes <b>to school</b> → [there] instead. It helps <b>my sister and I</b> → [us] stay fit."]},
+ {id:"1.9-7",n:"7",title:"Conjunctions",instr:"Complete the text with the correct conjunctions (and, but, or).",para:true,
+  items:["I enjoy making Japanese food, [but] I don't like eating sushi. I also love Italian food [and] my favourite meals are pizza [and|or] pasta. I don't enjoy watching football [or] going for a run, [but] I like going for walks on Sunday afternoons. At weekends, my friends and I ride our bikes [or] we stay at home and play board games instead."]},
+ {id:"1.9-11",n:"11",title:"Write your personal profile",type:"open",instr:"Three paragraphs: All about me · My life · My interests. Use pronouns, adverbs and and / but / or. Не пиши личные данные (адрес)!",items:["All about me","My life","My interests"]}
+ ]}
+];
+
+var REVIEW=[
+ {id:"r-1",n:"1",title:"Grammar",instr:"Complete the sentences with the present simple form of the verbs below.",bank:["do","go","not have","not like","not speak","relax","study","teach"],
+  items:["Erik [studies] computer science at his school.","Students [go] to school from Monday to Friday.","My brother and I [relax] in front of the TV.","You and your friends [don't like] playing chess.","Dad [doesn't have] lunch at work; he eats at home.","In Spain, people [don't speak] German.","Asuka [does] her homework in the library.","Ms Mendes [teaches] geography at our school."]},
+ {id:"r-2",n:"2",title:"Grammar: dialogue",instr:"Complete the dialogue with the present simple form of the verbs in brackets and short answers.",plain:true,
+  items:["<b>Jo</b> [Do] you [like] music? (like)","<b>Lee</b> Yes, [I do] – I love it!","<b>Jo</b> Me too, but I can't play a musical instrument. [Do] you [play] any instruments? (play)","<b>Lee</b> Yes, [I do]. I have guitar lessons. And my sister and I [make] music videos together. (make)","<b>Jo</b> Really? [Does] she [have] guitar lessons too? (have)","<b>Lee</b> No, [she doesn't]. She [sings] instead. (sing)","<b>Jo</b> Wow! [Do] your parents [watch] your videos? (watch)","<b>Lee</b> No, [they don't]. They hate vlogs!"]},
+ {id:"r-3",n:"3",title:"Vocabulary",instr:"Match the sentence halves.",type:"match",showOpts:true,
+  opts:[{v:"A",t:"bed at 10 p.m."},{v:"B",t:"up late at the weekend."},{v:"C",t:"our teeth."},{v:"D",t:"dressed in her bedroom."},{v:"E",t:"a shower before bed."},{v:"F",t:"the train to school; we walk instead."},{v:"G",t:"breakfast before I leave the house."},{v:"H",t:"to music on our phones."}],
+  items:[{q:"My friends and I listen",a:"H"},{q:"Twice a day, we brush",a:"C"},{q:"My sister and I don't take",a:"F"},{q:"My brother hates mornings, so he gets",a:"B"},{q:"After breakfast, Lisa gets",a:"D"},{q:"I wash my face or have",a:"E"},{q:"Every night, Jamal goes to",a:"A"},{q:"I'm not hungry, so I don't have",a:"G"}]},
+ {id:"r-4",n:"4",title:"Vocabulary: free-time activities",instr:"Complete the free-time activities. (Подсказка — первая буква.)",
+  items:["My family and I [play|^p…] [board|^b…] games together.","Do you [listen|^l…] to [music|^m…]? I do. Especially K-pop.","I'm good at art, and I [draw|^d…] [pictures|^p…] of my friends.","I prefer to [read|^r…] a [comic|^c…] instead of a book.","Many people [learn|^l…] a [language|^l…] at school. We study German and French.","Cleo's active; she [goes|^g…] for a [run|^r…] every day.","I [make|^m…] [cakes|^c…]. My favourite ones are chocolate."]},
+ {id:"r-5",n:"5",title:"Cumulative review",instr:"Choose the correct answer to complete the text: A, B or C.",para:true,
+  items:["Hi! I'm Jada. I'm sixteen years old. I'm from Kansas, {so|*but|or} I'm here in Tampere, Finland, for four months!! I've got an amazing host family with a girl called Mila. Finland and the USA are very different. From a young age, Finnish students go {–|*to|to the} school on their own. They walk or {*ride|read|go} their bikes. At nine years old, they also {have|go|*take} the bus to school.","I {go|*get|dressed} up very early because school starts at 8.15 a.m. Finnish students aren't stressed like students in the US. They have {breakfast|*lunch|dinner} at midday. It lasts {*an|a|–} hour and they also relax for fifteen minutes between classes. School {finish|finishs|*finishes} at 2.45 p.m. US students go to after-school clubs and play sports, learn how to {*take|make|do} photos or design websites, but many Finnish students don't. Mila doesn't {goes|*go|go to} home after school – instead she visits her friends' homes or goes {on|to|*for} a walk in town. {Does|Have|*Do} she and her classmates do a lot of homework? No, they {*don't|doesn't|haven't}! Mila only studies for 45 minutes a day! So, she {have|*has|is} got lots of free time to spend with friends and family. Mila also loves {tidy|*tidying|to tidying} her room, but I don't. I {don't|'m not|*can't} stand it because it's boring."],
+  post:'<div class="gloss"><b>host</b> – a person who has people staying at their house</div>'},
+ {id:"r-6",n:"6",title:"Think & share",type:"open",instr:"Answer the questions.",items:["What's your favourite time of day? Why?","Does your daily routine change at the weekend? How?","What are your favourite free-time activities? Why?","Which school subjects do you like / don't you like?"]}
+];
+
+/* ================= GRAMMAR ================= */
+var GRAM=[
+{t:"Present simple: affirmative",s:"Утвердительные предложения · урок 1.2",ic:"✅",bg:"var(--peach-s)",html:
+ '<p><b>Когда используем?</b> Для <mark>регулярных действий и привычек</mark>, <mark>распорядка дня</mark> и <mark>общих фактов</mark>.</p><p class="ex-l">I take the bus to school. · Ali gets up at half past five. · I come from Scotland. · Marcello likes pasta.</p>'+
+ '<table class="t"><tr><th>Subject</th><th>Verb</th><th></th></tr><tr><td>I / You / We / They</td><td><b>live</b></td><td rowspan="2">in Edinburgh.</td></tr><tr><td><mark>He / She / It</mark></td><td><mark><b>lives</b></mark></td></tr></table>'+
+ '<h4>Правила написания для he / she / it</h4><table class="t"><tr><th>Правило</th><th>Примеры</th></tr><tr><td>Обычно <b>+ -s</b></td><td>play → plays, get → gets</td></tr><tr><td>После <mark>-o, -ss, -x, -ch, -sh</mark> → <b>+ -es</b></td><td>go → goes, miss → misses, relax → relaxes, watch → watches, brush → brushes</td></tr><tr><td><mark>Согласная + -y</mark> → <b>-ies</b></td><td>study → studies, cry → cries, tidy → tidies</td></tr><tr><td>Гласная + -y → просто <b>-s</b></td><td>play → plays</td></tr><tr><td><mark>have → has</mark> (неправильный)</td><td>Zara has dinner at half past seven.</td></tr></table>'+
+ '<h4>Произношение окончания -s</h4><table class="t"><tr><th>/s/</th><th>/z/</th><th>/ɪz/</th></tr><tr><td>takes, cooks, eats, gets, likes</td><td>has, does, goes, lives, studies</td><td>uses, brushes, finishes, relaxes, watches</td></tr></table>'+
+ '<div class="warn"><b>Частая ошибка:</b> <span class="no">She go to school.</span> → She go<b>es</b> to school. · <span class="no">He haves</span> → He <b>has</b>.</div>',
+ ex:{id:"g-1",title:"Мини-проверка",instr:"Complete with the correct form of the verbs below. There is one extra verb.",bank:["brush","do","get","go","have","listen to","watch"],items:["My brother [watches] a lot of TV.","I [do] my homework before dinner.","They [have] a shower after football practice.","We [go] to school at 8.30.","Suzie [brushes] her teeth after breakfast.","You [listen to] great music!"]}},
+{t:"Present simple: negative",s:"Отрицательные предложения · урок 1.6",ic:"🚫",bg:"var(--bad-s)",html:
+ '<p>Отрицание образуем с помощью <mark><b>don\'t</b> (do not)</mark> и <mark><b>doesn\'t</b> (does not)</mark> + <b>глагол без to и без -s</b>.</p><table class="t"><tr><th>Subject</th><th>Negative</th><th>Example</th></tr><tr><td>I / You / We / They</td><td><mark>don\'t</mark> + verb</td><td>I don\'t spend much time at home.</td></tr><tr><td>He / She / It</td><td><mark>doesn\'t</mark> + verb</td><td>She doesn\'t like it.</td></tr></table>'+
+ '<div class="warn"><b>Запомни:</b> -s «уходит» в doesn\'t! <span class="no">He doesn\'t likes</span> → He doesn\'t <b>like</b>. · <span class="no">She don\'t play</span> → She <b>doesn\'t</b> play.</div>',
+ ex:{id:"g-2",title:"Мини-проверка",instr:"Make the sentences negative (use don't / doesn't).",items:["Tom plays chess. → Tom [doesn't play] chess.","We watch TV in the morning. → We [don't watch] TV in the morning.","My mum has lunch at work. → My mum [doesn't have] lunch at work.","I tidy my room on Sundays. → I [don't tidy] my room on Sundays.","Zara goes for a run. → Zara [doesn't go] for a run."]}},
+{t:"Present simple: yes/no questions & short answers",s:"Общие вопросы и краткие ответы · урок 1.6",ic:"❓",bg:"var(--sky-s)",html:
+ '<p>Вопрос: <mark><b>Do / Does</b> + подлежащее + глагол (без -s)?</mark></p><table class="t"><tr><th>Question</th><th>Yes</th><th>No</th></tr><tr><td><b>Do</b> I / you / we / they listen to music?</td><td>Yes, I <b>do</b>.</td><td>No, I <b>don\'t</b>.</td></tr><tr><td><b>Does</b> he / she / it like sport?</td><td>Yes, she <b>does</b>.</td><td>No, she <b>doesn\'t</b>.</td></tr></table>'+
+ '<div class="tip"><b>Краткий ответ</b> = Yes/No + местоимение + do/does/don\'t/doesn\'t. Глагол не повторяем: <span class="no">Yes, I like.</span> → Yes, I <b>do</b>.</div>'+
+ '<div class="warn"><b>Частая ошибка:</b> <span class="no">Does she plays?</span> → Does she <b>play</b>? · <span class="no">Do Amir do homework?</span> → <b>Does</b> Amir do homework?</div>',
+ ex:{id:"g-3",title:"Мини-проверка",instr:"Choose the correct option.",items:["{Do|*Does} your sister speak French? — Yes, she {do|*does}.","{*Do|Does} you and Jo take the bus? — Yes, we {*do|does}.","Does Amir {does|*do} homework? — No, he {don't|*doesn't}.","{*Do|Does} they listen to music? — No, they {*don't|doesn't}.","Do you like cooking? — Yes, {I like|*I do}."]}},
+{t:"Prepositions of time: at, on, in",s:"Предлоги времени · урок 1.4",ic:"🕒",bg:"var(--mint-s)",html:
+ '<table class="t"><tr><th>Предлог</th><th>Когда</th><th>Примеры</th></tr><tr><td><mark><b>at</b></mark></td><td>точное время, night, weekend, праздники дольше дня</td><td>at 6.30 a.m., at 12 o\'clock, at midnight, at 2 a.m., <b>at night</b>, <b>at the weekend</b></td></tr><tr><td><mark><b>on</b></mark></td><td>дни недели, даты, часть конкретного дня</td><td>on Monday, on 8th June 2021, on my birthday, on Sunday evenings</td></tr><tr><td><mark><b>in</b></mark></td><td>части дня, недели, месяцы, сезоны, годы</td><td>in the morning, in the evening, in February, in the summer, in 2010</td></tr></table>'+
+ '<div class="tip"><b>Пирамида:</b> AT — самое маленькое (часы) · ON — средне (дни) · IN — самое большое (месяцы, годы).</div>'+
+ '<div class="warn"><b>Запомни:</b> <b>at the weekend</b> (<span class="no">in the weekend</span>), <b>at night</b> (<span class="no">in night</span>). <i>in the night</i> = в течение одной ночи, <i>at night</i> = ночью вообще.</div>',
+ ex:{id:"g-4",title:"Мини-проверка",items:["I go to bed [at] 10 p.m.","We have art [on] Wednesdays.","My birthday is [in] March.","I sleep very well [at] night.","She was born [in] 2012.","We have a party [on] 31st December.","I do my homework [in] the afternoon.","We play tennis [at] the weekend."]}},
+{t:"Likes and dislikes + -ing",s:"Love, like, enjoy, hate, can't stand · урок 1.8",ic:"💗",bg:"var(--plum-s)",html:
+ '<table class="t"><tr><th></th><th>Глагол</th><th>Пример</th></tr><tr><td>😍</td><td><mark>love</mark></td><td>I love cooking.</td></tr><tr><td>🙂</td><td><mark>like</mark>, <mark>enjoy</mark></td><td>I enjoy drawing comics.</td></tr><tr><td>🙁</td><td><mark>don\'t like</mark></td><td>I don\'t like science.</td></tr><tr><td>😠</td><td><mark>hate</mark>, <mark>can\'t stand</mark></td><td>I can\'t stand tidying my room.</td></tr></table>'+
+ '<div class="tip"><b>После этих глаголов</b> действие ставим в форму <mark>-ing</mark>: love <b>tidying</b>, enjoy <b>listening</b>, hate <b>getting up</b> early. (Mila loves <b>tidying</b> her room.)</div>'+
+ '<h4>Согласие и несогласие</h4><table class="t"><tr><th>Фраза</th><th>Согласен</th><th>Не согласен</th></tr><tr><td>I love football. (+)</td><td>Me too. / <mark>So do I.</mark></td><td>Really? I don\'t.</td></tr><tr><td>I don\'t like singing. (–)</td><td>Me neither. / <mark>Neither do I.</mark></td><td>Really, I do!</td></tr><tr><td>I can\'t stand reading. (–)</td><td>Me neither. / <mark>Neither can I.</mark></td><td>Really? I love it!</td></tr></table>',
+ ex:{id:"g-5",title:"Мини-проверка",items:["I enjoy {listen|*listening|to listening} to music.","Mila loves {tidy|*tidying} her room.","I can't stand {*getting|get} up early.","A: I love pizza. B: {*So do I.|Neither do I.}","A: I don't like maths. B: {So do I.|*Neither do I.}","A: I can't stand rap. B: {Neither do I.|*Neither can I.}"]}},
+{t:"Conjunctions: and, but, or",s:"Союзы · урок 1.9",ic:"🔗",bg:"var(--lav-s)",html:
+ '<table class="t"><tr><th>Союз</th><th>Значение</th><th>Пример</th></tr><tr><td><mark><b>and</b></mark></td><td>соединяет похожие идеи</td><td>I have chess classes <b>and</b> I learn Mandarin Chinese.</td></tr><tr><td><mark><b>but</b></mark></td><td>противопоставление</td><td>My mum loves tidying the house, <b>but</b> I hate it.</td></tr><tr><td><mark><b>or</b></mark></td><td>в отрицаниях</td><td>I haven\'t got any brothers <b>or</b> sisters.</td></tr><tr><td><mark><b>or</b></mark></td><td>выбор из двух</td><td>I watch videos about history <b>or</b> biology.</td></tr></table>'+
+ '<div class="warn"><b>Внимание:</b> в отрицательном предложении — <b>or</b>, а не and: I don\'t like football <b>or</b> tennis.</div>',
+ ex:{id:"g-6",title:"Мини-проверка",items:["I like art {*and|but|or} I love music.","I love cats, {and|*but|or} my sister hates them.","I haven't got a phone {and|but|*or} a tablet.","Do you want tea {and|but|*or} juice?","She plays the piano {*and|or} sings."]}},
+{t:"Pronouns & adverbs to avoid repetition",s:"Местоимения и there · урок 1.9",ic:"🔁",bg:"var(--sky-s)",html:
+ '<p>Чтобы не повторять одно и то же слово, заменяем его <mark>местоимением</mark> или наречием <mark>there</mark> (там).</p><table class="t"><tr><th>Subject (кто?)</th><th>Object (кого? кому?)</th><th>Possessive (чей?)</th></tr><tr><td>I</td><td>me</td><td>my</td></tr><tr><td>you</td><td>you</td><td>your</td></tr><tr><td>he</td><td>him</td><td>his</td></tr><tr><td>she</td><td>her</td><td>her</td></tr><tr><td>it</td><td>it</td><td>its</td></tr><tr><td>we</td><td>us</td><td>our</td></tr><tr><td>they</td><td>them</td><td>their</td></tr></table>'+
+ '<p class="ex-l">My friend Leon likes books and <b>he</b> has got lots of <b>them</b>. <b>His</b> favourite book is … · It\'s a boarding school, so I live <b>there</b>.</p>',
+ ex:{id:"g-7",title:"Мини-проверка",instr:"Replace the words in brackets.",items:["Anna is my friend. [She] (Anna) lives in Almaty.","I love my cats. I play with [them] (my cats) every day.","My brother and I go to the park. We play football [there] (in the park).","Tom has got a dog. [His] (Tom's) dog is called Max.","Our parents watch [us] (my sister and me) at school concerts."]}},
+{t:"Consonant-vowel linking",s:"Произношение · урок 1.8",ic:"🗣️",bg:"var(--ok-s)",html:
+ '<p>Когда слово заканчивается на <mark>согласный звук</mark>, а следующее начинается с <mark>гласного звука</mark>, они звучат <b>слитно, как одно слово</b>.</p><p class="ex-l">It\'s‿a fun game. · I love‿it. · What‿else can we do? · twice‿a week · I can\'t stand‿art.</p><div class="tip"><b>Важно:</b> считаем <b>звуки</b>, а не буквы! В <i>like‿it</i> последняя буква e, но звук — /k/, поэтому связывание есть.</div>',
+ ex:{id:"g-8",title:"Мини-проверка",type:"mc",items:[{q:"I think‿it\'s awesome — <b>think it\'s</b>",o:["linking ✓","no linking"],a:0},{q:"<b>fun game</b>",o:["linking ✓","no linking"],a:1},{q:"<b>like apples</b>",o:["linking ✓","no linking"],a:0},{q:"<b>can we</b>",o:["linking ✓","no linking"],a:1}]}}
+];
+
+/* ================= WORDS ================= */
+var CATS={routines:"Распорядок дня",real:"Real English",hobbies:"Хобби",time:"Время и тайм-менеджмент",stress:"Teenage stress",likes:"Likes & dislikes",vlog:"Влоги, школа, профиль"};
+var W=[
+["routines","get up","вставать (с кровати)"],["routines","get dressed","одеваться"],["routines","have a shower","принимать душ"],["routines","have breakfast","завтракать"],["routines","have lunch","обедать"],["routines","have dinner","ужинать"],["routines","brush my teeth|brush your teeth|brush teeth","чистить зубы"],["routines","brush my hair|brush your hair|brush hair","расчёсывать волосы"],["routines","go to school","ходить в школу"],["routines","go home","идти домой"],["routines","go to bed","ложиться спать"],["routines","take the bus","ехать на автобусе"],["routines","take the train","ехать на поезде"],["routines","do my homework|do your homework|do homework","делать домашнее задание"],["routines","watch TV","смотреть телевизор"],["routines","watch music videos","смотреть музыкальные клипы"],["routines","relax","отдыхать, расслабляться"],["routines","have guitar lessons","ходить на уроки гитары"],["routines","wash my face|wash your face|wash face","умываться"],["routines","have a rest","отдохнуть, передохнуть"],["routines","have a lie-in","поваляться в кровати подольше"],["routines","get out of bed","вылезти из кровати"],["routines","wake up late","проснуться поздно"],["routines","get ready for tomorrow","подготовиться к завтрашнему дню"],["routines","check your timetable","проверить расписание"],["routines","meet my friends|meet friends","встречаться с друзьями"],["routines","bedtime","время ложиться спать"],["routines","daily routine","распорядок дня"],
+["real","guys","ребята, народ"],["real","Why not","Почему бы не …? (хорошая идея)"],["real","Don't worry about it","Не переживай (всё в порядке)"],["real","congratulations","поздравляю! молодец!"],["real","lots of","много"],["real","awesome","потрясающий, классный"],
+["hobbies","go for a walk","пойти на прогулку"],["hobbies","go for a run","пойти на пробежку"],["hobbies","ride a bike","кататься на велосипеде"],["hobbies","take photos","фотографировать"],["hobbies","read a comic","читать комикс"],["hobbies","make a cake","испечь торт"],["hobbies","listen to music","слушать музыку"],["hobbies","draw a picture","нарисовать картинку"],["hobbies","play a board game","играть в настольную игру"],["hobbies","tidy your room|tidy my room","убирать свою комнату"],["hobbies","learn a language","учить язык"],["hobbies","design a website","создавать (дизайн) сайт"],["hobbies","get fit","прийти в форму"],["hobbies","free time","свободное время"],["hobbies","hobby","хобби"],["hobbies","active","активный"],["hobbies","creative","творческий"],["hobbies","practical","практичный"],["hobbies","play chess","играть в шахматы"],["hobbies","musical instrument","музыкальный инструмент"],
+["time","plan your week","планировать свою неделю"],["time","task","задача, задание"],["time","notes","заметки"],["time","diary","ежедневник"],["time","minutes","минуты"],["time","break","разбивать на части (глагол)"],["time","a break","перерыв"],["time","routine","распорядок, режим"],["time","daily","ежедневный"],["time","midnight","полночь"],["time","at the weekend","на выходных"],["time","at night","ночью"],["time","half past five","половина шестого"],["time","project","проект"],
+["stress","stress","стресс"],["stress","stressed","в стрессе, напряжённый"],["stress","busy","занятой"],["stress","unhealthy","нездоровый, вредный"],["stress","healthy","здоровый, полезный"],["stress","after-school clubs","внеклассные кружки"],["stress","team sports","командные виды спорта"],["stress","practical skills","практические навыки"],["stress","get good results","получать хорошие результаты"],["stress","schoolwork","учёба, школьные задания"],["stress","work together","работать вместе"],["stress","tired","уставший"],["stress","worried","обеспокоенный"],["stress","teenager","подросток"],["stress","content words","смысловые слова"],
+["likes","love","обожать, любить"],["likes","like","нравиться"],["likes","enjoy","получать удовольствие"],["likes","don't like","не нравиться"],["likes","hate","ненавидеть"],["likes","can't stand","терпеть не могу"],["likes","So do I","Я тоже (+)"],["likes","Neither do I","Я тоже нет (–)"],["likes","Me too","Я тоже"],["likes","Me neither","Я тоже нет"],["likes","boring","скучный"],
+["vlog","vlog","видеоблог"],["vlog","vlogger","видеоблогер"],["vlog","channel","канал"],["vlog","subscribe","подписаться"],["vlog","comments","комментарии"],["vlog","pros and cons","плюсы и минусы"],["vlog","host","хозяин (принимающий гостей)"],["vlog","host family","принимающая семья"],["vlog","boarding school","школа-интернат"],["vlog","homeschool","домашнее обучение"],["vlog","timetable","расписание"],["vlog","computer science","информатика"],["vlog","geography","география"],["vlog","school subjects","школьные предметы"],["vlog","personal profile","личный профиль"],["vlog","beauty products","косметика"],["vlog","fashion","мода"]
+].map(function(w){var a=w[1].split("|");return {c:w[0],en:a[0],alt:a,ru:w[2]};});
+
+/* ================= RENDER ================= */
+var curLesson=0;
+function lessonPct(L){var n=0,p=0;L.ex.forEach(function(e){if(e.type=="open")return;n++;if(S.perf[e.id])p++;});return n?Math.round(p/n*100):0;}
+function exPct(list){var n=0,p=0;list.forEach(function(e){if(e.type=="open")return;n++;if(S.perf[e.id])p++;});return n?Math.round(p/n*100):0;}
+function drawChips(){
+  $("lessonChips").innerHTML=LESSONS.map(function(L,i){return '<button class="chip'+(i==curLesson?' on':'')+'" data-i="'+i+'"><span class="pc">'+(lessonPct(L)==100?"⭐":lessonPct(L)+"%")+'</span>'+L.id+' '+L.title+'<small>'+L.kind+'</small></button>'}).join("");
+}
+function drawLesson(){
+  drawChips();
+  var L=LESSONS[curLesson],box=$("lessonBox");box.innerHTML="";
+  var head=document.createElement("div");
+  head.innerHTML='<div class="lhead" style="border-color:'+L.col+'"><span class="pill">'+L.id+' '+L.kind+'</span><h2>'+L.title+'</h2><div class="muted">'+L.goal+'</div></div><div class="key">'+L.key+'</div>';
+  box.appendChild(head);
+  L.ex.forEach(function(e,i){renderEx(e,box,i+1)});
+  var nav=document.createElement("div");nav.className="acts";
+  nav.innerHTML=(curLesson>0?'<button class="btn ghost" data-go="-1">← '+LESSONS[curLesson-1].id+'</button>':'')+(curLesson<LESSONS.length-1?'<button class="btn" data-go="1">Дальше: '+LESSONS[curLesson+1].id+' '+LESSONS[curLesson+1].title+' →</button>':'<a class="btn mint" href="#review" style="text-decoration:none">Перейти к Review →</a>');
+  box.appendChild(nav);
+}
+$("lessonChips").addEventListener("click",function(e){var c=e.target.closest(".chip");if(!c)return;curLesson=+c.dataset.i;drawLesson();window.scrollTo(0,0);});
+$("lessonBox").addEventListener("click",function(e){var g=e.target.closest("[data-go]");if(!g)return;curLesson+=+g.dataset.go;drawLesson();window.scrollTo(0,0);});
+
+function drawReview(){var b=$("reviewBox");b.innerHTML="";REVIEW.forEach(function(e,i){renderEx(e,b,i+1)});}
+function drawGrammar(){
+  var b=$("gramBox");b.innerHTML="";
+  GRAM.forEach(function(g,i){
+    var d=document.createElement("details");d.className="gram";
+    d.innerHTML='<summary><span class="ic" style="background:'+g.bg+'">'+g.ic+'</span><span>'+g.t+'<small>'+g.s+'</small></span><span class="ar">▶</span></summary><div class="gbody">'+g.html+'</div>';
+    b.appendChild(d);
+    renderEx(g.ex,d.querySelector(".gbody"),"✓");
+  });
+}
+function refreshProgress(){
+  var h=LESSONS.map(function(L){var p=lessonPct(L);return '<div style="margin:6px 0"><div style="display:flex;justify-content:space-between;font-weight:700;font-size:15px"><span>'+L.id+' '+L.title+'</span><span>'+(p==100?"⭐ ":"")+p+'%</span></div><div class="xpbar"><i style="width:'+p+'%;background:var(--mint)"></i></div></div>'}).join("");
+  var rp=exPct(REVIEW),gp=exPct(GRAM.map(function(g){return g.ex}));
+  h+='<div style="margin:6px 0"><div style="display:flex;justify-content:space-between;font-weight:700;font-size:15px"><span>1.10 Review</span><span>'+rp+'%</span></div><div class="xpbar"><i style="width:'+rp+'%;background:var(--sky)"></i></div></div>';
+  h+='<div style="margin:6px 0"><div style="display:flex;justify-content:space-between;font-weight:700;font-size:15px"><span>Грамматика</span><span>'+gp+'%</span></div><div class="xpbar"><i style="width:'+gp+'%;background:var(--peach)"></i></div></div>';
+  var gb=0;for(var k in S.game)gb=Math.max(gb,S.game[k]);
+  h+='<p class="muted" style="font-size:14px;margin:8px 0 0">🎮 Рекорд в игре слов: <b>'+gb+'</b> очков</p>';
+  $("progressList").innerHTML=h;
+  if($("lessonChips").innerHTML)drawChips();
+}
+var resetArm=false;
+$("resetBtn").addEventListener("click",function(){
+  if(!resetArm){resetArm=true;$("resetHint").textContent="Нажми ещё раз, чтобы удалить весь прогресс";setTimeout(function(){resetArm=false;$("resetHint").textContent=""},4000);return;}
+  S={xp:0,best:{},att:{},perf:{},open:{},game:{}};save();location.reload();
+});
+
+/* ================= GAME ================= */
+var G={mode:"enru",cat:"all"};
+$("gCats").innerHTML='<button class="opt on" data-c="all">🌈 Все слова</button>'+Object.keys(CATS).map(function(k){return '<button class="opt" data-c="'+k+'">'+CATS[k]+'</button>'}).join("");
+function optGroup(id,key,attr){$(id).addEventListener("click",function(e){var b=e.target.closest(".opt");if(!b)return;$(id).querySelectorAll(".opt").forEach(function(x){x.classList.remove("on")});b.classList.add("on");G[key]=b.dataset[attr];showBest();});}
+optGroup("gModes","mode","m");optGroup("gCats","cat","c");
+function bestKey(){return G.mode+"-"+G.cat;}
+function showBest(){var b=S.game[bestKey()];$("gBest").textContent=b?"🏅 Рекорд: "+b:"";}
+var R,timer;
+function pool(){return G.cat=="all"?W:W.filter(function(w){return w.c==G.cat});}
+function startGame(){
+  R={time:60,hp:3,score:0,combo:0,right:0,wrong:0,q:shuffle(pool()),i:0,mist:[],lock:false};
+  $("gSetup").style.display="none";$("gOver").style.display="none";$("gPlay").style.display="block";
+  $("gAns").style.display=G.mode=="type"?"none":"grid";$("gType").style.display=G.mode=="type"?"flex":"none";
+  hud();nextQ();clearInterval(timer);
+  timer=setInterval(function(){R.time-=0.25;if(R.time<=0){R.time=0;endGame();}hud();},250);
+}
+function hud(){
+  $("gHearts").textContent="❤️".repeat(R.hp)+"🤍".repeat(3-R.hp);
+  $("gScore").textContent=R.score;
+  $("gCombo").textContent=R.combo>=5?"🔥 комбо ×2 ("+R.combo+")":(R.combo>=2?"комбо "+R.combo:"");
+  $("gTime").textContent="⏱ "+Math.ceil(R.time)+" c";
+  $("gBar").style.width=Math.min(100,R.time/60*100)+"%";
+}
+function nextQ(){
+  if(R.i>=R.q.length){R.q=R.q.concat(shuffle(pool()));}
+  var w=R.q[R.i];R.cur=w;R.lock=false;
+  if(G.mode=="type"){
+    $("gPrompt").textContent=w.ru;
+    $("gSub").textContent=w.en.split(" ").map(function(p){return p.charAt(0)+"·".repeat(Math.max(0,p.length-1))}).join("  ");
+    var inp=$("gInput");inp.value="";inp.className="";inp.focus();
+  } else {
+    var enru=G.mode=="enru";
+    $("gPrompt").textContent=enru?w.en:w.ru;$("gSub").textContent=enru?"выбери перевод":"choose the English";
+    var same=W.filter(function(x){return x!==w&&x.c==w.c});var other=W.filter(function(x){return x!==w&&x.c!=w.c});
+    var dis=shuffle(same).slice(0,3);if(dis.length<3)dis=dis.concat(shuffle(other).slice(0,3-dis.length));
+    var opts=shuffle([w].concat(dis));
+    $("gAns").innerHTML=opts.map(function(o,i){return '<button class="ans" data-ok="'+(o===w?1:0)+'"><kbd>'+(i+1)+'</kbd>'+esc(enru?o.ru:o.en)+'</button>'}).join("");
+  }
+}
+function answer(ok,btn){
+  if(R.lock)return;R.lock=true;var w=R.cur;
+  if(ok){R.combo++;R.right++;R.score+=R.combo>=5?2:1;R.time=Math.min(75,R.time+1);}
+  else{R.combo=0;R.wrong++;R.hp--;R.mist.push(w);}
+  if(btn){btn.classList.add(ok?"ok":"bad");if(!ok)$("gAns").querySelectorAll('[data-ok="1"]').forEach(function(b){b.classList.add("ok")});}
+  if(G.mode=="type"){$("gInput").className=ok?"ok":"bad";if(!ok)$("gSub").innerHTML="✔ <b>"+esc(w.en)+"</b>";}
+  hud();R.i++;
+  if(R.hp<=0){setTimeout(endGame,ok?300:900);return;}
+  setTimeout(nextQ,ok?350:(G.mode=="type"?1300:900));
+}
+$("gAns").addEventListener("click",function(e){var b=e.target.closest(".ans");if(b)answer(b.dataset.ok=="1",b);});
+document.addEventListener("keydown",function(e){
+  if(!R||$("gPlay").style.display!="block"||G.mode=="type")return;
+  var n=+e.key;if(n>=1&&n<=4){var b=$("gAns").querySelectorAll(".ans")[n-1];if(b)answer(b.dataset.ok=="1",b);}
+});
+function submitType(){if(R.lock)return;var v=norm($("gInput").value);if(!v)return;answer(R.cur.alt.some(function(a){return norm(a)==v}),null);}
+$("gOk").addEventListener("click",submitType);
+$("gInput").addEventListener("keydown",function(e){if(e.key=="Enter")submitType();});
+$("gSkip").addEventListener("click",function(){answer(false,null);});
+function endGame(){
+  if($("gPlay").style.display=="none")return;
+  clearInterval(timer);$("gPlay").style.display="none";$("gOver").style.display="block";
+  $("gFinal").textContent=R.score+" очков";
+  var perfect=R.wrong==0&&R.right>=10;var xp=R.score+(perfect?20:0);
+  var k=bestKey(),rec=false;if(!S.game[k]||R.score>S.game[k]){S.game[k]=R.score;rec=R.score>0;}save();
+  $("gMsg").innerHTML="✅ "+R.right+" верно · ❌ "+R.wrong+" ошибок"+(perfect?'<br><mark>⭐ Идеальный раунд! +20 XP</mark>':'')+(rec?'<br>🏅 Новый рекорд!':'');
+  $("gMist").innerHTML=R.mist.length?'<b>Повтори эти слова:</b>'+R.mist.map(function(w){return '<div>• <b>'+esc(w.en)+'</b> — '+esc(w.ru)+'</div>'}).join(""):'<div style="text-align:center">Ни одной ошибки — так держать! 🎉</div>';
+  addXP(xp,perfect?"идеальный раунд ⭐":"игра слов");refreshProgress();showBest();
+}
+$("gStart").addEventListener("click",startGame);$("gAgain").addEventListener("click",startGame);
+$("gMenu").addEventListener("click",function(){$("gOver").style.display="none";$("gSetup").style.display="block";});
+$("wordList").innerHTML=Object.keys(CATS).map(function(k){return '<div class="grp"><h4>'+CATS[k]+'</h4>'+W.filter(function(w){return w.c==k}).map(function(w){return '<div class="w"><span>'+esc(w.en)+'</span><span>'+esc(w.ru)+'</span></div>'}).join("")+'</div>'}).join("");
+
+/* ================= ROUTER ================= */
+function route(){
+  var v=(location.hash||"#home").slice(1);if(!$("v-"+v))v="home";
+  document.querySelectorAll("section.view").forEach(function(s){s.classList.toggle("on",s.id=="v-"+v)});
+  document.querySelectorAll("#tabs a").forEach(function(a){a.classList.toggle("on",a.dataset.v==v)});
+  if(v=="home")refreshProgress();
+  if(v!="game"&&R&&$("gPlay").style.display=="block"){clearInterval(timer);$("gPlay").style.display="none";$("gSetup").style.display="block";}
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+drawRank();drawLesson();drawReview();drawGrammar();refreshProgress();showBest();route();
+</script>
+</body>
+</html>
